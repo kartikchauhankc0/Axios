@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌌 Background */
+body {
+  background: radial-gradient(circle at top left, #1a1a2e, #000000);
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ✨ Smooth UI */
+* {
+  transition: all 0.25s ease;
+}
+
+/* 🎧 Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #1db954;
+  border-radius: 10px;
+}
