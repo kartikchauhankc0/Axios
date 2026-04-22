@@ -14,8 +14,8 @@ app.use(cookieParser())
 // ✅ FIXED CORS (IMPORTANT)
 app.use(cors({
   origin: [
-    "http://localhost:5173", // local
-    "https://axios-flax.vercel.app/login" // change later
+    "http://localhost:5173",
+    "https://axios-flax.vercel.app"  // ✅ YOUR REAL FRONTEND URL
   ],
   credentials: true
 }))
@@ -24,7 +24,6 @@ app.use('/api/auth', authRoutes)
 app.use('/api/music', musicRoutes)
 app.use('/api/favorites', favoriteRoutes)
 
-// optional root route
 app.get("/", (req, res) => {
   res.send("API is running 🚀")
 })

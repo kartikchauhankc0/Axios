@@ -2,10 +2,14 @@ const userModel = require("../models/user.model")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 
+// ✅ detect environment
+const isProduction = process.env.NODE_ENV === "production"
+
+// ✅ cookie config (works both local + production)
 const cookieOptions = {
     httpOnly: true,
-    secure: true,        // ✅ required for Render (HTTPS)
-    sameSite: "none",    // ✅ required for cross-origin
+    secure: isProduction,                 // true only on HTTPS (Render)
+    sameSite: isProduction ? "none" : "lax",
 }
 
 async function registerUser(req, res) {
@@ -33,6 +37,7 @@ async function registerUser(req, res) {
         role: user.role,
     }, process.env.JWT_SECRET)
 
+    // ✅ set cookie
     res.cookie("token", token, cookieOptions)
 
     res.status(201).json({
@@ -68,6 +73,7 @@ async function loginUser(req, res) {
         role: user.role,
     }, process.env.JWT_SECRET)
 
+    // ✅ set cookie
     res.cookie("token", token, cookieOptions)
 
     res.status(200).json({
@@ -82,11 +88,13 @@ async function loginUser(req, res) {
 }
 
 async function logOutUser(req, res) {
+    // ✅ clear cookie (same config required)
     res.clearCookie("token", {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     })
+
     res.status(200).json({ message: "user logged out successfully" })
 }
 
