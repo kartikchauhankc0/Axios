@@ -11,13 +11,22 @@ const favoriteRoutes = require('./routes/favorite.routes')
 app.use(express.json())
 app.use(cookieParser())
 
+// ✅ FIXED CORS (IMPORTANT)
 app.use(cors({
-  origin: "http://localhost:5173", // later change to frontend URL
+  origin: [
+    "http://localhost:5173", // local
+    "https://your-frontend-url.vercel.app" // change later
+  ],
   credentials: true
 }))
 
 app.use('/api/auth', authRoutes)
 app.use('/api/music', musicRoutes)
 app.use('/api/favorites', favoriteRoutes)
+
+// optional root route
+app.get("/", (req, res) => {
+  res.send("API is running 🚀")
+})
 
 module.exports = app

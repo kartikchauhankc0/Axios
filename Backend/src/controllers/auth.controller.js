@@ -2,6 +2,12 @@ const userModel = require("../models/user.model")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 
+const cookieOptions = {
+    httpOnly: true,
+    secure: true,        // ✅ required for Render (HTTPS)
+    sameSite: "none",    // ✅ required for cross-origin
+}
+
 async function registerUser(req, res) {
     const { username, email, password, role = 'user' } = req.body;
 
@@ -27,9 +33,7 @@ async function registerUser(req, res) {
         role: user.role,
     }, process.env.JWT_SECRET)
 
-    res.cookie("token", token, {
-        httpOnly: true,
-    })
+    res.cookie("token", token, cookieOptions)
 
     res.status(201).json({
         message: "User registered successfully",
@@ -64,9 +68,7 @@ async function loginUser(req, res) {
         role: user.role,
     }, process.env.JWT_SECRET)
 
-    res.cookie("token", token, {
-        httpOnly: true,
-    })
+    res.cookie("token", token, cookieOptions)
 
     res.status(200).json({
         message: "User logged in successfully",
@@ -80,11 +82,14 @@ async function loginUser(req, res) {
 }
 
 async function logOutUser(req, res) {
-    res.clearCookie("token")
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+    })
     res.status(200).json({ message: "user logged out successfully" })
 }
 
-// ✅ NEW (IMPORTANT)
 async function getCurrentUser(req, res) {
     try {
         res.status(200).json({
