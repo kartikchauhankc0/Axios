@@ -15,7 +15,7 @@ app.use(cookieParser())
 app.use(cors({
   origin: [
     "http://localhost:5173", // local
-    "https://your-frontend-url.vercel.app" // change later
+    "https://axios-flax.vercel.app/login" // change later
   ],
   credentials: true
 }))
