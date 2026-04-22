@@ -8,13 +8,13 @@ const authRoutes = require('./routes/auth.routes')
 const musicRoutes = require('./routes/music.routes')
 const favoriteRoutes = require('./routes/favorite.routes')
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}))
-
 app.use(express.json())
 app.use(cookieParser())
+
+app.use(cors({
+  origin: "http://localhost:5173", // later change to frontend URL
+  credentials: true
+}))
 
 app.use('/api/auth', authRoutes)
 app.use('/api/music', musicRoutes)
